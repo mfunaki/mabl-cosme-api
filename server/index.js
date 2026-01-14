@@ -61,6 +61,14 @@ const basicAuthMiddleware = (req, res, next) => {
 // Basic認証を適用（有効な場合のみ）
 app.use(basicAuthMiddleware);
 
+// 全リクエストのヘッダーをチェックするミドルウェア（デバッグ用）
+// TODO: 本番環境にデプロイする前に削除してください
+app.use((req, res, next) => {
+  const authHeader = req.headers['authorization'];
+  console.log(`[DEBUG_AUTH] URL: ${req.url}, Authorization: ${authHeader || 'None'}`);
+  next();
+});
+
 // リクエストログ
 app.use((req, res, next) => {
   if (req.path.startsWith('/api/')) {
