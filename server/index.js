@@ -5,6 +5,26 @@ import apiProxy from './proxy.js';
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// 許可するオリジン（環境変数またはデフォルト値）
+const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGINS || 'https://mabl-cosme-ixi7x7b23a-an.a.run.app').split(',');
+
+// CORSミドルウェア
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+
+  if (origin && ALLOWED_ORIGINS.includes(origin)) {
+    res.header('Access-Control-Allow-Origin', origin);
+    res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  }
+
+  // OPTIONSリクエスト（プリフライト）への応答
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+  next();
+});
+
 // JSONボディパーサーを設定
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
