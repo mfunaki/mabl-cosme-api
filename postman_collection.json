@@ -1,0 +1,164 @@
+{
+  "info": {
+    "name": "mabl-cosme-api",
+    "description": "mabl-cosme API Server - OpenAI画像生成APIへのプロキシ",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    },
+    {
+      "key": "basicAuthUsername",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "basicAuthPassword",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health Check",
+      "item": [
+        {
+          "name": "Get Server Info",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/",
+              "host": ["{{baseUrl}}"],
+              "path": [""]
+            },
+            "description": "サーバー情報とエンドポイント一覧を取得"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "OpenAI Image Generation",
+      "item": [
+        {
+          "name": "Generate Image (DALL-E 3)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"model\": \"dall-e-3\",\n  \"prompt\": \"A cute cat wearing a hat\",\n  \"n\": 1,\n  \"size\": \"1024x1024\",\n  \"quality\": \"standard\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/openai",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "openai"]
+            },
+            "description": "DALL-E 3を使用して画像を生成"
+          },
+          "response": []
+        },
+        {
+          "name": "Generate Image (DALL-E 2)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"model\": \"dall-e-2\",\n  \"prompt\": \"A beautiful sunset over the ocean\",\n  \"n\": 1,\n  \"size\": \"512x512\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/openai",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "openai"]
+            },
+            "description": "DALL-E 2を使用して画像を生成（複数枚生成可能）"
+          },
+          "response": []
+        },
+        {
+          "name": "Generate HD Image (DALL-E 3)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"model\": \"dall-e-3\",\n  \"prompt\": \"A detailed landscape painting of mountains at dawn\",\n  \"n\": 1,\n  \"size\": \"1792x1024\",\n  \"quality\": \"hd\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/openai",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "openai"]
+            },
+            "description": "DALL-E 3でHD品質の横長画像を生成"
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
