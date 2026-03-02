@@ -17,7 +17,8 @@ mabl-cosme-api/
 │       └── deploy.yml    # Cloud Runデプロイ用GitHub Actions
 ├── server/
 │   ├── index.js          # Express.jsメインサーバー
-│   └── proxy.js          # APIプロキシルーター
+│   ├── proxy.js          # APIプロキシルーター
+│   └── auth.js           # JWT認証ロジック
 ├── Dockerfile            # コンテナイメージ定義
 ├── .dockerignore         # Dockerビルド除外ファイル
 ├── package.json          # 依存関係定義
@@ -28,7 +29,8 @@ mabl-cosme-api/
 ## API Endpoints
 
 - `GET /` - サーバー情報
-- `POST /api/openai` - OpenAI画像生成APIへのプロキシ
+- `POST /api/login` - ログイン（JWTトークン取得）
+- `POST /api/openai` - OpenAI画像生成APIへのプロキシ（要JWT認証）
 
 ## Commands
 
@@ -47,13 +49,15 @@ npm start
 
 1. `.env.example`を`.env`にコピー
 2. `OPENAI_API_KEY`にOpenAI APIキーを設定
-3. （オプション）Basic認証を有効にする場合は`BASIC_AUTH_USERNAME`と`BASIC_AUTH_PASSWORD`を設定
+3. `AUTH_USERNAME`と`AUTH_PASSWORD`にログイン用クレデンシャルを設定（未設定時は`demo`/`demo123`）
+4. （オプション）`JWT_SECRET`にJWT署名用シークレットを設定
 
 ## Technology Stack
 
 - **Runtime**: Node.js (ES Modules)
 - **Framework**: Express.js 4.18
 - **HTTP Client**: node-fetch 3.3
+- **認証**: jsonwebtoken 9.x（JWT）
 
 ## Deployment
 
@@ -69,8 +73,9 @@ mainブランチへのpushで自動デプロイされます。
 | `WIF_PROVIDER` | Workload Identity Federationプロバイダー |
 | `WIF_SERVICE_ACCOUNT` | サービスアカウントメール |
 | `OPENAI_API_KEY` | OpenAI APIキー |
-| `BASIC_AUTH_USERNAME` | Basic認証ユーザー名（オプション） |
-| `BASIC_AUTH_PASSWORD` | Basic認証パスワード（オプション） |
+| `AUTH_USERNAME` | JWTログイン用ユーザー名 |
+| `AUTH_PASSWORD` | JWTログイン用パスワード |
+| `JWT_SECRET` | JWT署名用シークレット |
 
 #### GCP事前準備
 
