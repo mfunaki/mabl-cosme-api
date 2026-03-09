@@ -52,12 +52,39 @@ npm start
 3. `AUTH_USERNAME`と`AUTH_PASSWORD`にログイン用クレデンシャルを設定（未設定時は`demo`/`demo123`）
 4. （オプション）`JWT_SECRET`にJWT署名用シークレットを設定
 
+### 主な環境変数一覧
+
+| 変数名 | 必須 | デフォルト | 説明 |
+|--------|:----:|-----------|------|
+| `OPENAI_API_KEY` | ✅ | - | OpenAI Images API用キー |
+| `AUTH_USERNAME` | - | `demo` | JWTログイン用ユーザー名 |
+| `AUTH_PASSWORD` | - | `demo123` | JWTログイン用パスワード |
+| `JWT_SECRET` | - | ランダム生成 | JWT署名用シークレット |
+| `PORT` | - | `3000` | Expressサーバーの待ち受けポート |
+| `ALLOWED_ORIGINS` | - | Cloud Runデフォルト URL | CORSを許可するオリジン（カンマ区切り） |
+
+## Testing / Lint
+
+現時点では `package.json` にテストや Lint 用のスクリプトは定義されていません（`npm test` / `npm run lint` は未設定）。導入時は `scripts` にコマンドを追加してください。
+
 ## Technology Stack
 
 - **Runtime**: Node.js (ES Modules)
 - **Framework**: Express.js 4.18
 - **HTTP Client**: node-fetch 3.3
 - **認証**: jsonwebtoken 9.x（JWT）
+
+## Implementation Notes
+
+### server/index.js
+- CORS: `ALLOWED_ORIGINS`（カンマ区切り）またはデフォルトURLから許可オリジンを生成。OPTIONSリクエストはプリフライトとして200を返す
+- ボディパーサー: `express.json` / `express.urlencoded` ともに上限10MB
+- **デバッグ用Authorizationログ**: 全リクエストの`Authorization`ヘッダを`[DEBUG_AUTH]`付きでコンソール出力。本番デプロイ前に削除すること（TODO コメントあり）
+- ルーティング: `/api` 配下を `server/proxy.js` に委譲
+
+### server/proxy.js
+- `POST /api/openai`: リクエストボディをそのまま `https://api.openai.com/v1/images/generations` に転送し、レスポンスをクライアントに返却
+- OpenAI側の非2xxレスポンスはステータスコードごとクライアントに転送
 
 ## Deployment
 
