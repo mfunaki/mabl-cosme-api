@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "node --env-file=.env server/index.js",
-    "start": "node --env-file=.env server/index.js"
+    "start": "node --env-file=.env server/index.js",
+    "mcp:sync": "node scripts/sync-mcp.mjs"
   },
   "dependencies": {
     "dotenv": "^17.2.3",

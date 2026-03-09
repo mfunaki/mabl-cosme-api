@@ -25,3 +25,7 @@ Thumbs.db
 # Docker
 docker-compose.override.yml
 *.tar
+
+# AI Assistant Instructions (auto-generated)
+GEMINI.md
+.github/copilot-instructions.md

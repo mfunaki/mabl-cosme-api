@@ -1,0 +1,15 @@
+{
+    "servers": {
+        "mabl": {
+            "type": "stdio",
+            "command": "npx",
+            "args": [
+                "-y",
+                "@mablhq/mabl-cli@latest",
+                "mcp",
+                "start"
+            ]
+        }
+    },
+    "inputs": []
+}
