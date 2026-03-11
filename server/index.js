@@ -6,7 +6,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // 許可するオリジン（環境変数またはデフォルト値）
-const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGINS || 'https://mabl-cosme-ixi7x7b23a-an.a.run.app').split(',');
+const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGINS || 'https://mabl-cosme.mayoct.net').split(',');
 
 // CORSミドルウェア
 app.use((req, res, next) => {
